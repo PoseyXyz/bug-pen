@@ -1,23 +1,20 @@
 document.getElementById('issueInputForm').addEventListener('submit', saveIssue);
 
+/*add an issue*/
 function saveIssue(e){
     e.preventDefault();
-    var issueDesc = document.getElementById('issueDescInput').value
-    var issueSeverity = document.getElementById('issueSeverityInput').value
-    var issueAssignedTo=document.getElementById('issueAssignedToInput').value
-
-    var issueId=Date.now()
-
-    var issueStatus = 'Open'
-
-    var issue={
+    let issueDesc = document.getElementById('issueDescInput').value
+    let issueSeverity = document.getElementById('issueSeverityInput').value
+    let issueAssignedTo=document.getElementById('issueAssignedToInput').value
+    let issueId=Date.now()
+    let issueStatus = 'Open'
+    let issue={
         id:issueId,
         description:issueDesc,
         severity:issueSeverity,
         assignedTo:issueAssignedTo,
         status:issueStatus
     }
-
     if(localStorage.getItem('issues')==null){
         var issues=[];
         issues.push(issue);
@@ -27,71 +24,55 @@ function saveIssue(e){
         issues.push(issue);
         localStorage.setItem('issues', JSON.stringify(issues));
     }
-
-    
     document.getElementById('issueInputForm').reset();
-
     fetchIssues();
-
-
-
 }
 
+/*close an issue*/
 function setStatusClosed(id){
-    var issues = JSON.parse(localStorage.getItem('issues'))
-
+    let issues = JSON.parse(localStorage.getItem('issues'))
     for(let i = 0; i<issues.length; i++){
         if(issues[i].id==id){
             issues[i].status='Closed';
         }
     }
-
     localStorage.setItem('issues', JSON.stringify(issues));
-
     fetchIssues();
 }
 
+/*delete an issue*/
 function deleteIssue(id){
-    var issues = JSON.parse(localStorage.getItem('issues'))
-
+    let issues = JSON.parse(localStorage.getItem('issues'))
     for(let i = 0; i<issues.length; i++){
         if(issues[i].id==id){
             issues.splice(i, 1);
         }
     }
-
     localStorage.setItem('issues', JSON.stringify(issues));
-
     fetchIssues();
 }
 
-function setColor(status){
-    status==='Open' ? 'green' : 'red'
-
-}
-
+/*display all issues from local storage*/
 function fetchIssues(){
-    var issues = JSON.parse(localStorage.getItem('issues'))
-    var issuesList = document.getElementById('issuesList')
-
+    let issues = JSON.parse(localStorage.getItem('issues'))
+    let issuesList = document.getElementById('issuesList')
     issuesList.innerHTML='';
-
     for(let i=0; i<issues.length; i++){
-        var id = issues[i].id;
-        var desc= issues[i].description;
-        var severity= issues[i].severity;
-        var assignedTo = issues[i].assignedTo;
-        var status = issues[i].status;
-
+        const id = issues[i].id;
+        const desc= issues[i].description;
+        const severity= issues[i].severity;
+        const assignedTo = issues[i].assignedTo;
+        let status = issues[i].status;
         issuesList.innerHTML+='<div class="issue">'+
         // '<h6>'+ id +'</h6>'+
-        '<p><span>'+ status +'</span></p><div>'+
+        '<p class="status"><span>'+ status +'</span></p><div>'+
         '<h3>'+ desc +'</h3>'+
-        '<p>'+ severity +'</p>'+
-        '<p>'+ assignedTo +'</p>'+
+        '<p class="severity"><i class="fas fa-exclamation-triangle"></i>'+ severity +'</p>'+
+        '<p><i class="far fa-edit"></i>'+ assignedTo +'</p>'+
         '<button class="btn1" onclick="setStatusClosed(\''+id+'\')">Close</button>'+
          '<button class="btn2" onclick="deleteIssue(\''+id+'\')">Delete</button>'+
         '</div>'
     }
 }
+
 

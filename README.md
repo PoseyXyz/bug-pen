@@ -1,0 +1,1 @@
+A simple web-app for penning down bugs and their descriptions for later while writing code.. Utilizes local storage so you don't lose pinned bugs.
