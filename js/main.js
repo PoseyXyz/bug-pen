@@ -74,5 +74,14 @@ function fetchIssues(){
         '</div>'
     }
 }
+//toggle color scheme
+const toggleSwitch  = document.querySelector('#switch')
+const appWrapper = document.querySelector('.app-wrapper')
+function toggleMode(){
+    appWrapper.classList.toggle('light');
+}
+toggleSwitch.addEventListener('click', toggleMode)
+
+
 
 
